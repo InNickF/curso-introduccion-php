@@ -18,20 +18,32 @@ $firstOfArray = function(array $array, $place) {
   if (count($array) == 0) { return null; }
   return $array[$place];
 };
-$jobs = [
-  [
-    'title' => 'JS Developer',
-    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
-  ],
-  [
-    'title' => 'React Developer',
-    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
-  ],
-  [
-    'title' => 'PHP Developer',
-    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
-  ]
-];
+
+include_once('./jobs.php');
+
+
+
+function printJob($job) {
+  if($job->visible == false) {
+    return;
+  };
+
+  echo "
+  <li class=\"work-position\">
+  <h5>" . $job->getTitle() . "</h5>
+  <small>Trabajó: " . getDuration($job->months) . "</small>
+  <p>" . $job->description . "</p>
+
+  <strong>Achievements:</strong>
+  <ul>
+    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
+    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
+    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
+  </ul>
+</li>
+  ";
+};
+
 ?>
 
 <!doctype html>
@@ -83,20 +95,21 @@ $jobs = [
           <h3 class="border-bottom-gray" >Work Experience</h3>
           <ul>
             <?php
+            $totalMonths = 0;
+            $limitMonths = 120;
             for ($i=0; $i < count($jobs); $i++) { 
-              echo "
-              <li class=\"work-position\">
-              <h5>" . $jobs[$i]['title'] . "</h5>
-              <p>" . $jobs[$i]['description'] . "</p>
-              <strong>Achievements:</strong>
-              <ul>
-                <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-              </ul>
-            </li>
-              ";
-            }
+              $totalMonths += $jobs[$i]->months;
+
+              // if($jobs[$i]['visible'] == false) {
+              //   continue;
+              //   };
+
+              if($totalMonths > $limitMonths) {
+                break;
+              };
+
+              printJob($jobs[$i]);
+            };
             ?>
           </ul>
         </div>
