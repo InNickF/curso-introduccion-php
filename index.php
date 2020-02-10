@@ -18,6 +18,20 @@ $firstOfArray = function(array $array, $place) {
   if (count($array) == 0) { return null; }
   return $array[$place];
 };
+$jobs = [
+  [
+    'title' => 'JS Developer',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
+  ],
+  [
+    'title' => 'React Developer',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
+  ],
+  [
+    'title' => 'PHP Developer',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.',
+  ]
+];
 ?>
 
 <!doctype html>
@@ -68,9 +82,12 @@ $firstOfArray = function(array $array, $place) {
         <div>
           <h3 class="border-bottom-gray" >Work Experience</h3>
           <ul>
-            <li class="work-position">
-              <h5>PHP Developer</h5>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.</p>
+            <?php
+            for ($i=0; $i < count($jobs); $i++) { 
+              echo "
+              <li class=\"work-position\">
+              <h5>" . $jobs[$i]['title'] . "</h5>
+              <p>" . $jobs[$i]['description'] . "</p>
               <strong>Achievements:</strong>
               <ul>
                 <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
@@ -78,26 +95,9 @@ $firstOfArray = function(array $array, $place) {
                 <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
               </ul>
             </li>
-            <li class="work-position">
-                <h5>PHP Developer</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.</p>
-                <strong>Achievements:</strong>
-                <ul>
-                  <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                  <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                  <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                </ul>
-              </li>
-              <li class="work-position">
-                  <h5>PHP Developer</h5>
-                  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sapiente sed pariatur sint exercitationem eos expedita eveniet veniam ullam, quia neque facilis dicta voluptatibus. Eveniet doloremque ipsum itaque obcaecati nihil.</p>
-                  <strong>Achievements:</strong>
-                  <ul>
-                    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-                  </ul>
-                </li>
+              ";
+            }
+            ?>
           </ul>
         </div>
         <div>
