@@ -22,28 +22,6 @@ $firstOfArray = function(array $array, $place) {
 include_once('./jobs.php');
 
 
-
-function printJob($job) {
-  if($job->visible == false) {
-    return;
-  };
-
-  echo "
-  <li class=\"work-position\">
-  <h5>" . $job->getTitle() . "</h5>
-  <small>Trabajó: " . getDuration($job->months) . "</small>
-  <p>" . $job->description . "</p>
-
-  <strong>Achievements:</strong>
-  <ul>
-    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-    <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-  </ul>
-</li>
-  ";
-};
-
 ?>
 
 <!doctype html>
@@ -71,7 +49,7 @@ function printJob($job) {
       <div class="col">
         <h1><?php echo $fullName; ?></h1>
         <h2>PHP Developer</h2>
-        <p><?php echo $firstOfArray($array2, 1); ?></p>
+        <p><?php echo $firstOfArray($array2, 0); ?></p>
         <ul>
           <li>Mail: nick@mail.com</li>
           <li>Phone: 1234567890</li>
@@ -108,7 +86,7 @@ function printJob($job) {
                 break;
               };
 
-              printJob($jobs[$i]);
+              $jobs[$i]->printElement($jobs[$i]);
             };
             ?>
           </ul>
@@ -116,6 +94,14 @@ function printJob($job) {
         <div>
             <h3 class="border-bottom-gray">Projects</h3>
             <div class="project">
+              <ul>
+            <?php
+            for ($i=0; $i < count($projects); $i++) { 
+              $projects[$i]->printElement($projects[$i]);
+            };
+            ?>
+            </ul>
+
                 <h5>Project X</h5>
                 <div class="row">
                     <div class="col-3">
