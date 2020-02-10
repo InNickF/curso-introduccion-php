@@ -1,3 +1,25 @@
+<?php 
+$strings = 'Nick';
+$lastName = 'Fuenmayor';
+$fullName = "$strings David $lastName Molinares";
+// var_dump($strings);
+$numbers = 1;
+$decimals = 2.2;
+$firstVar = 2;
+$array = [
+  "curso1" => "php",
+  "curso2" => "js",
+];
+$array2 = [
+  "curso1",
+  "curso2",
+];
+$firstOfArray = function(array $array, $place) {
+  if (count($array) == 0) { return null; }
+  return $array[$place];
+};
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -21,8 +43,9 @@
         <img id="profile-picture" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
       </div>
       <div class="col">
-        <h1>Nick Fuenmayor</h1>
+        <h1><?php echo $fullName; ?></h1>
         <h2>PHP Developer</h2>
+        <p><?php echo $firstOfArray($array2, 1); ?></p>
         <ul>
           <li>Mail: nick@mail.com</li>
           <li>Phone: 1234567890</li>
