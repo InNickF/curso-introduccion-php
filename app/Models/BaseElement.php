@@ -1,11 +1,17 @@
 <?php
+namespace App\Models;
+require_once 'Printable.php';
 
-class BaseElement {
+class BaseElement implements Printable {
     protected $title;
     public $id;
     public $description;
     public $visible = true;
     public $months;
+
+    public function getDescription() {
+      return $this->description;
+    }
 
     public function __construct($title) {
         $this->setTitle($title);
@@ -70,7 +76,7 @@ class BaseElement {
       
       }
 
-      public function printElement($element) {
+      public function printElement(Printable $element) {
         if($element->visible == false) {
           return;
         };
@@ -79,7 +85,7 @@ class BaseElement {
         <li class=\"work-position\">
         <h5>" . $element->getTitle() . "</h5>
         <small>" . $this->getDurationAsString() . "</small>
-        <p>" . $element->description . "</p>
+        <p>" . $element->getDescription() . "</p>
       
         <strong>Achievements:</strong>
         <ul>
