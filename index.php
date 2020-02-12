@@ -19,7 +19,7 @@ $firstOfArray = function(array $array, $place) {
   return $array[$place];
 };
 
-include_once('./jobs.php');
+include_once('jobs.php');
 
 
 ?>
@@ -92,22 +92,24 @@ include_once('./jobs.php');
           </ul>
         </div>
         <div>
+          
             <h3 class="border-bottom-gray">Projects</h3>
-            <div class="project">
-              <ul>
+            <ul>
             <?php
             for ($i=0; $i < count($projects); $i++) { 
               $projects[$i]->printElement($projects[$i]);
             };
             ?>
             </ul>
+            <div class="project">
+              
 
                 <h5>Project X</h5>
                 <div class="row">
                     <div class="col-3">
-                        <img id="profile-picture" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
+                        <img class="profile-picture img-fluid" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
                       </div>
-                      <div class="col">
+                      <div class="col-9">
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius earum corporis at accusamus quisquam hic quos vel? Tenetur, ullam veniam consequatur esse quod cum, quam cupiditate assumenda natus maiores aperiam.</p>
                         <strong>Technologies used:</strong>
                         <span class="badge badge-secondary">PHP</span>
@@ -120,7 +122,7 @@ include_once('./jobs.php');
                 <h5>Project X</h5>
                 <div class="row">
                     <div class="col-3">
-                        <img id="profile-picture" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
+                        <img class="profile-picture img-fluid" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
                       </div>
                       <div class="col">
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius earum corporis at accusamus quisquam hic quos vel? Tenetur, ullam veniam consequatur esse quod cum, quam cupiditate assumenda natus maiores aperiam.</p>
@@ -158,7 +160,9 @@ include_once('./jobs.php');
     </div>
     <div id="resume-footer" class="row">
       <div class="col">
+        <p class="text-center">
           Designed by @nick
+        </p>
       </div>
     </div>
   </div>

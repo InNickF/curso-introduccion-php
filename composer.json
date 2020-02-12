@@ -5,7 +5,8 @@
         }
     },
     "require": {
-        "illuminate/database": "^6.15.0"
+        "illuminate/database": "^6.15.0",
+        "zendframework/zend-diactoros": "^2.2"
     }
 
 }

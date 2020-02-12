@@ -1,25 +1,6 @@
 <?php
-require_once 'vendor/autoload.php';
-use Illuminate\Database\Capsule\Manager as Capsule;
+
 use App\Models\Job;
-$capsule = new Capsule;
-
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'php_basic',
-    'username'  => 'root',
-    'password'  => '',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix'    => '',
-]);
-
-// Make this Capsule instance available globally via static methods... (optional)
-$capsule->setAsGlobal();
-
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-$capsule->bootEloquent();
 
 // var_dump($_GET);
 // var_dump($_POST);
@@ -29,7 +10,7 @@ if(!empty($_POST)) {
     $job->description = $_POST['description'];
     $job->save();
 };
-var_dump($_POST);
+// var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +22,7 @@ var_dump($_POST);
 </head>
 <body>
     <h1>Add Job</h1>
-    <form action="addJob.php" method="post">
+    <form action="addjob.php" method="post">
     <label>
         Title
     </label><br>

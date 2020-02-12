@@ -72,16 +72,16 @@ class Job extends Model {
     
     }
 
-    public function printElement(Printable $element) {
+    public function printElement($element) {
       if($element->visible == false) {
         return;
       };
     
       echo "
       <li class=\"work-position\">
-      <h5>" . $element->getTitle() . "</h5>
+      <h5>" . $element->title . "</h5>
       <small>" . $this->getDurationAsString() . "</small>
-      <p>" . $element->getDescription() . "</p>
+      <p>" . $element->description . "</p>
     
       <strong>Achievements:</strong>
       <ul>
