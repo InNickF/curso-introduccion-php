@@ -2,6 +2,16 @@
 
 {% block content %}
     <h1>Add Project</h1>
+    {% if saved != null %}
+		<div class="alert alert-primary">
+			{{ getMessage }}
+		</div>
+	{% endif %}
+	{% if error != null %}
+		<div class="alert alert-danger">
+			{{ getMessage }}
+		</div>
+	{% endif %}
     <form action="/phpbasics/curso/projects/add" method="post">
     <label>
         Title
