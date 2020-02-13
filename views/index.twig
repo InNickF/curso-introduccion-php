@@ -71,7 +71,12 @@
 						<h5>{{ project.title }}</h5>
 						<div class="row">
 							<div class="col-3">
-								<img class="profile-picture img-fluid" src="https://ui-avatars.com/api/?name=John+Doe&size=255" alt="">
+								<img class="profile-picture img-fluid" src="
+								{{ project.logo }}
+								{% if project.logo == '' %}
+								{{'https://ui-avatars.com/api/?name=John+Doe&size=255'}}
+								{% endif %}
+								" alt="">
 							</div>
 							<div class="col-9">
 								<p>{{ project.description }}</p>

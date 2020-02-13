@@ -1,7 +1,8 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-    <h1>Add Project</h1>
+
+<h1>Add User</h1>
     {% if saved != null %}
 		<div class="alert alert-primary">
 			{{ getMessage }}
@@ -13,21 +14,19 @@
             {{ errorReporting }}
 		</div>
 	{% endif %}
-    <form action="/phpbasics/curso/projects/add" method="post" enctype="multipart/form-data">
+    <form action="/phpbasics/curso/users/add" method="post">
     <label>
-        Title:
+        Name
     </label><br>
-    <input name="title" type="text"><br><br>
+    <input name="name" type="text"><br><br>
     <label>
-        Description:
+        Email:
     </label><br>
-    <input name="description" type="text"><br><br>
+    <input name="email" type="text"><br><br>
     <label>
-        Business logo:
+        Password:
     </label><br>
-    <input name="logo" type="file"><br><br>
-    <button type="submit">Send</button>
+    <input name="password" type="password"><br><br>
+    <button type="submit">Create user</button>
     </form>
-
 {% endblock %}
-

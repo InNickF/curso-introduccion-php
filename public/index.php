@@ -41,6 +41,8 @@ $map->get('index', '/phpbasics/curso/', [
     'action' => 'indexAction',
 ]);
 
+// Jobs
+
 $map->get('addjob', '/phpbasics/curso/jobs/add', [
     'controller' => 'App\Controllers\JobsController',
     'action' => 'getAddJobAction',
@@ -51,6 +53,8 @@ $map->post('saveJob', '/phpbasics/curso/jobs/add', [
     'action' => 'getAddJobAction',
 ]);
 
+// Projects
+
 $map->get('addProject', '/phpbasics/curso/projects/add', [
     'controller' => 'App\Controllers\ProjectsController',
     'action' => 'getAddProjectAction',
@@ -59,6 +63,18 @@ $map->get('addProject', '/phpbasics/curso/projects/add', [
 $map->post('saveProject', '/phpbasics/curso/projects/add', [
     'controller' => 'App\Controllers\ProjectsController',
     'action' => 'getAddProjectAction',
+]);
+
+// Users
+
+$map->get('addUser', '/phpbasics/curso/users/add', [
+    'controller' => 'App\Controllers\UsersController',
+    'action' => 'getAddUserAction',
+]);
+
+$map->post('saveUser', '/phpbasics/curso/users/add', [
+    'controller' => 'App\Controllers\UsersController',
+    'action' => 'getAddUserAction',
 ]);
 
 

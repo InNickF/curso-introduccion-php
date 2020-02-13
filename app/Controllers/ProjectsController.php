@@ -11,6 +11,7 @@ class ProjectsController extends BaseController {
         $e = null;
         $saved = null;
         $getMessage = null;
+        $errorReporting = null;
         
         $postData = $request->getParsedBody();
         $projectValidator = v::key('title', v::stringType()->notEmpty())
@@ -20,15 +21,24 @@ class ProjectsController extends BaseController {
 
             try {
                 $projectValidator->assert($postData);
+                $files = $request->getUploadedFiles();
+                $logo = $files['logo'];
                 $project = new Project();
                 $project->title = $postData['title'];
                 $project->description = $postData['description'];
+                if($logo->getError() == UPLOAD_ERR_OK) {
+                    $fileName = $logo->getClientFileName();
+                    $logoSrc = "uploads/$fileName";
+                    $logo->moveTo($logoSrc);
+                    $project->logo = $logoSrc;
+                }
                 $project->save();
                 $saved = true;
                 $getMessage = 'Se ha creado correctamente el Project.';
                 
             } catch (\Exception $e) {
-                $getMessage = 'Ha ocurrido un error al tratar de crear el Project, corrige tu formulario y vuelve a intentar.';
+                $errorReporting = $e->getMessage();
+                $getMessage = 'Ha ocurrido un error al tratar de crear el Project:';
             }
         };
 
@@ -36,6 +46,7 @@ class ProjectsController extends BaseController {
             'error' => $e,
             'getMessage' => $getMessage,
             'saved' => $saved,
+            'errorReporting' => $errorReporting,
         ]);
         // include_once '../views/addJob.php';
     }
