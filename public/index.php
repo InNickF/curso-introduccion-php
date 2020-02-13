@@ -36,8 +36,31 @@ $request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
 
 $routerContainer = new RouterContainer();
 $map = $routerContainer->getMap();
-$map->get('index', '/phpbasics/curso/', '../index.php');
-$map->get('addjob', '/phpbasics/curso/jobs/add', '../addjob.php');
+$map->get('index', '/phpbasics/curso/', [
+    'controller' => 'App\Controllers\IndexController',
+    'action' => 'indexAction',
+]);
+
+$map->get('addjob', '/phpbasics/curso/jobs/add', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'getAddJobAction',
+]);
+
+$map->post('saveJob', '/phpbasics/curso/jobs/add', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'getAddJobAction',
+]);
+
+$map->get('addProject', '/phpbasics/curso/projects/add', [
+    'controller' => 'App\Controllers\ProjectsController',
+    'action' => 'getAddProjectAction',
+]);
+
+$map->post('saveProject', '/phpbasics/curso/projects/add', [
+    'controller' => 'App\Controllers\ProjectsController',
+    'action' => 'getAddProjectAction',
+]);
+
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
@@ -45,5 +68,12 @@ $route = $matcher->match($request);
 if (!$route) {
     echo 'No route';
 } else {
-   require $route->handler;
+    $hadlerData = $route->handler;
+    $controllerName = $hadlerData['controller'];
+    $actionName = $hadlerData['action'];
+
+    $controller = new $controllerName;
+    $response = $controller->$actionName($request);
+
+    echo $response->getBody();
 }

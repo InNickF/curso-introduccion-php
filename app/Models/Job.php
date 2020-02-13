@@ -76,21 +76,6 @@ class Job extends Model {
       if($element->visible == false) {
         return;
       };
-    
-      echo "
-      <li class=\"work-position\">
-      <h5>" . $element->title . "</h5>
-      <small>" . $this->getDurationAsString() . "</small>
-      <p>" . $element->description . "</p>
-    
-      <strong>Achievements:</strong>
-      <ul>
-        <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-        <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-        <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-      </ul>
-    </li>
-      ";
     }
 
 };
