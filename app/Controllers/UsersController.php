@@ -12,6 +12,7 @@ class UsersController extends BaseController {
         $saved = null;
         $getMessage = null;
         $errorReporting = null;
+        $userId = $_SESSION['userId'] ?? null;
 
         $postData = $request->getParsedBody();
         $userValidator = v::key('name', v::stringType()->notEmpty()->notOptional())
@@ -41,6 +42,7 @@ class UsersController extends BaseController {
             'getMessage' => $getMessage,
             'saved' => $saved,
             'errorReporting' => $errorReporting,
+            'userId' => $userId,
         ]);
     }
 }

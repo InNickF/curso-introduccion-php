@@ -1,0 +1,27 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+	<h1>Login</h1>
+	{% if error != null %}
+		<div class="alert alert-danger">
+			{{ errorMessage }}
+		</div>
+	{% endif %}
+	{% if routeProtectedMessage != null %}
+		<div class="alert alert-danger">
+			{{ routeProtectedMessage }}
+		</div>
+	{% endif %}
+	<form action="/phpbasics/curso/auth" method="post">
+		<label>
+			Email
+		</label><br>
+		<input name="email" type="text"><br>
+		<label>
+			Password
+		</label><br>
+		<input name="password" type="password"><br>
+		<button type="submit">Send</button>
+	</form><br>
+	<a href="/phpbasics/curso/">Return to home</a>
+{% endblock %}

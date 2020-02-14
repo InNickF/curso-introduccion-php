@@ -11,7 +11,7 @@ class IndexController extends BaseController {
         $strings = 'Nick';
         $lastName = 'Fuenmayor';
         $fullName = "$strings David $lastName Molinares";
-
+        $userId = $_SESSION['userId'] ?? null;
         $totalMonths = 0;
         $limitMonths = 120;
         $jobs = Job::All();
@@ -21,7 +21,8 @@ class IndexController extends BaseController {
         return $this->renderHTML('index.twig', [
             'fullname' => $fullName,
             'jobs' => $jobs,
-            'projects' => $projects
+            'projects' => $projects,
+            'userId' => $userId,
         ]);
     }
 };

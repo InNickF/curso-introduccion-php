@@ -28,5 +28,9 @@
     </label><br>
     <input name="password" type="password"><br><br>
     <button type="submit">Create user</button>
-    </form>
+    </form><br>
+
+    {% if userId %}
+    <a href="/phpbasics/curso/admin">Go to administration</a>
+    {% endif %}
 {% endblock %}

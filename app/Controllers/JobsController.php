@@ -11,6 +11,7 @@ class JobsController extends BaseController {
         $getMessage = null;
         $e = null;
         $saved = null;
+        $userId = $_SESSION['userId'] ?? null;
         if ($request->getMethod() == 'POST') {
             $postData = $request->getParsedBody();
             $jobValidator = v::key('title', v::stringType()->notEmpty())
@@ -33,6 +34,7 @@ class JobsController extends BaseController {
             'getMessage' => $getMessage,
             'error' => $e,
             'saved' => $saved,
+            'userId' => $userId,
             ]);
     }
 }

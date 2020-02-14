@@ -22,5 +22,8 @@
 		</label><br>
 		<input name="description" type="text"><br>
 		<button type="submit">Send</button>
-	</form>
+	</form><br>
+	{% if userId %}
+    <a href="/phpbasics/curso/admin">Go to administration</a>
+    {% endif %}
 {% endblock %}

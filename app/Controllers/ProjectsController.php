@@ -12,6 +12,7 @@ class ProjectsController extends BaseController {
         $saved = null;
         $getMessage = null;
         $errorReporting = null;
+        $userId = $_SESSION['userId'] ?? null;
         
         $postData = $request->getParsedBody();
         $projectValidator = v::key('title', v::stringType()->notEmpty())
@@ -47,6 +48,7 @@ class ProjectsController extends BaseController {
             'getMessage' => $getMessage,
             'saved' => $saved,
             'errorReporting' => $errorReporting,
+            'userId' => $userId,
         ]);
         // include_once '../views/addJob.php';
     }
