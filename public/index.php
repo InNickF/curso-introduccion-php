@@ -42,20 +42,20 @@ $request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
 
 $routerContainer = new RouterContainer();
 $map = $routerContainer->getMap();
-$map->get('index', '/phpbasics/curso/', [
+$map->get('index', '/', [
     'controller' => 'App\Controllers\IndexController',
     'action' => 'indexAction',
 ]);
 
 // Jobs
 
-$map->get('addjob', '/phpbasics/curso/jobs/add', [
+$map->get('addjob', '/jobs/add', [
     'controller' => 'App\Controllers\JobsController',
     'action' => 'getAddJobAction',
     'auth' => true,
 ]);
 
-$map->post('saveJob', '/phpbasics/curso/jobs/add', [
+$map->post('saveJob', '/jobs/add', [
     'controller' => 'App\Controllers\JobsController',
     'action' => 'getAddJobAction',
     'auth' => true,
@@ -63,13 +63,13 @@ $map->post('saveJob', '/phpbasics/curso/jobs/add', [
 
 // Projects
 
-$map->get('addProject', '/phpbasics/curso/projects/add', [
+$map->get('addProject', '/projects/add', [
     'controller' => 'App\Controllers\ProjectsController',
     'action' => 'getAddProjectAction',
     'auth' => true,
 ]);
 
-$map->post('saveProject', '/phpbasics/curso/projects/add', [
+$map->post('saveProject', '/projects/add', [
     'controller' => 'App\Controllers\ProjectsController',
     'action' => 'getAddProjectAction',
     'auth' => true,
@@ -77,34 +77,34 @@ $map->post('saveProject', '/phpbasics/curso/projects/add', [
 
 // Users
 
-$map->get('addUser', '/phpbasics/curso/users/add', [
+$map->get('addUser', '/users/add', [
     'controller' => 'App\Controllers\UsersController',
     'action' => 'getAddUserAction',
-    'auth' => true,
+    'auth' => false,
 ]);
 
-$map->post('saveUser', '/phpbasics/curso/users/add', [
+$map->post('saveUser', '/users/add', [
     'controller' => 'App\Controllers\UsersController',
     'action' => 'getAddUserAction',
-    'auth' => true,
+    'auth' => false,
 ]);
 
 
 // Login
 
-$map->get('loginForm', '/phpbasics/curso/login', [
+$map->get('loginForm', '/login', [
     'controller' => 'App\Controllers\AuthController',
     'action' => 'getLogin',
 ]);
 
-$map->post('authUser', '/phpbasics/curso/auth', [
+$map->post('authUser', '/auth', [
     'controller' => 'App\Controllers\AuthController',
     'action' => 'postLogin',
 ]);
 
 // Logout
 
-$map->get('logout', '/phpbasics/curso/logout', [
+$map->get('logout', '/logout', [
     'controller' => 'App\Controllers\AuthController',
     'action' => 'getLogout',
     'auth' => true,
@@ -112,7 +112,7 @@ $map->get('logout', '/phpbasics/curso/logout', [
 
 // Admin
 
-$map->get('admin', '/phpbasics/curso/admin', [
+$map->get('admin', '/admin', [
     'controller' => 'App\Controllers\AdminController',
     'action' => 'getIndex',
     'auth' => true,
@@ -132,7 +132,7 @@ if (!$route) {
 
     if($needsAuth && !$sessionUserId) {
         $_SESSION['routeProtected']= 'Route protected, you need to be logged.';
-        $response = new RedirectResponse('/phpbasics/curso/login');
+        $response = new RedirectResponse('/login');
     } else {
         $controller = new $controllerName;
         $response = $controller->$actionName($request);

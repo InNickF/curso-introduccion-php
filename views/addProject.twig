@@ -13,7 +13,7 @@
             {{ errorReporting }}
 		</div>
 	{% endif %}
-    <form action="/phpbasics/curso/projects/add" method="post" enctype="multipart/form-data">
+    <form action="/projects/add" method="post" enctype="multipart/form-data">
     <label>
         Title:
     </label><br>
@@ -29,7 +29,7 @@
     <button type="submit">Send</button>
     </form><br>
     {% if userId %}
-    <a href="/phpbasics/curso/admin">Go to administration</a>
+    <a href="/admin">Go to administration</a>
     {% endif %}
 {% endblock %}
 

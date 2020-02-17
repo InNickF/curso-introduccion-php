@@ -11,7 +11,7 @@ class AuthController extends BaseController {
         $userId = $_SESSION['userId'] ?? null;
         $routeProtectedMessage = $_SESSION['routeProtected'] ?? null;
         if($userId) {
-            return new RedirectResponse('/phpbasics/curso/admin');
+            return new RedirectResponse('/admin');
         }
         
             return $this->renderHTML('login.twig', [
@@ -29,7 +29,7 @@ class AuthController extends BaseController {
             if (\password_verify($postData['password'], $user->password)) {
                 $_SESSION['userId'] = $user->id;
                 unset($_SESSION['routeProtected']);
-                return new RedirectResponse('/phpbasics/curso/admin');
+                return new RedirectResponse('/admin');
             } else {
                 $error = true;
                 $errorMessage = 'El usuario o la contraseña no es correto.';
@@ -50,6 +50,6 @@ class AuthController extends BaseController {
     }
     public function getLogout() {
         unset($_SESSION['userId']);
-        return new RedirectResponse('/phpbasics/curso/login');
+        return new RedirectResponse('/login');
     }
 }
