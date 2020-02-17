@@ -1,13 +1,20 @@
 <?php
 namespace App\Models;
+
+use App\Traits\HasDefaultImage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Job extends Model {
+  use HasDefaultImage;
+  use SoftDeletes;
+
   protected $table = 'jobs';
   // public $title;
-  public $id;
+
   // public $description;
   public $visible = true;
-  public $months;
+
 
   public function getDescription() {
     return $this->description;

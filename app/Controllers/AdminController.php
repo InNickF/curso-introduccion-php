@@ -6,7 +6,10 @@ use App\Controllers\BaseController;
 
 class AdminController extends BaseController {
     public function getIndex()
-    {
-        return $this->renderHTML('admin.twig');
+    {   
+        $userName = $_SESSION['userName'] ?? null;
+        return $this->renderHTML('admin.twig', [
+            'userName' => $userName,
+        ]);
     }
 };

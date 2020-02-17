@@ -1,0 +1,50 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+	<div class="row mt-3">
+		<div class="col-12 d-flex w-100 justify-content-between align-items-center">
+        <h1>Jobs</h1>
+        <a href="/jobs/add" class="btn btn-primary">Add Job</a>
+        </div>
+		<table class="table">
+			<tr>
+                <th>
+					ID
+				</th>
+                 <th>
+					IMG
+				</th>
+				<th>
+					Job Title
+				</th>
+				<th class="text-right">
+					Action
+				</th>
+			</tr>
+			{% for job in jobs %}
+				<tr>
+                    <td>
+						{{job.id}}
+					</td>
+                    <td>
+						<img src="{{job.logo}}" style="max-width:30px;height:auto;" class="rounded">
+					</td>
+					<td>
+						{{job.title}}
+					</td>
+					<td class="text-right">
+                    {% if job.deleted_at %}
+                    <a class="btn btn-warning" href="/jobs/restore?id={{job.id}}">Restore</a>
+                    {% endif %}
+                    {% if not job.deleted_at %}
+                    <a class="btn btn-danger" href="/jobs/delete?id={{job.id}}">Delete</a>
+                    {% endif %}
+
+					</td>
+				</tr>
+			{% endfor %}
+
+		</table>
+	</div>
+
+{% endblock %}

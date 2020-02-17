@@ -1,8 +1,12 @@
 {% extends "layout.twig" %}
 {% block adminbar %}
 {% if userId %}
-<div class="bg-dark p-2 mb-5">
-<a class="text-white" href="/admin">Go to administration</a>
+<div class="bg-dark p-2 mb-5 d-flex justify-content-between align-items-center">
+<div>
+<a class="text-white d-inline btn btn-primary py-2" href="/admin">Go to administration</a>
+<p class="text-white m-0 d-inline">{{userName }}</p>
+</div>
+<a class="text-white btn btn-danger d-inline" href="/logout">Logout</a>
 </div>
 {% endif %}
 {% endblock %}
@@ -36,22 +40,24 @@
 <div class="row">
 	<div class="col">
 		<div>
-			<h3 class="border-bottom-gray">Work Experience</h3>
-			<ul>
-
 				{% for job in jobs %}
-					<li class="work-position">
+					<div class="row work-position mb-3">
+					<div class="col-2">
+						<img src="{{ job.getImage }}" alt="logo" style="max-width:100px;height:auto;width:100%;"><br>
+						
+					</div>
+					<div class="col">
 						<h5>{{job.title}}</h5>
 						<small>{{job.getDurationAsString()}}</small>
 						<p>{{job.description}}</p>
-
 						<strong>Achievements:</strong>
 						<ul>
 							<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
 							<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
 							<li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
 						</ul>
-					</li>
+					</div>
+					</div>
 				{% endfor %}
 				{# <?php
         for ($i=0; $i < count($jobs); $i++) { 
@@ -68,7 +74,6 @@
           $jobs[$i]->printElement($jobs[$i]);
         };
         ?> #}
-			</ul>
 		</div>
 		<div>
 
@@ -80,10 +85,7 @@
 						<div class="row">
 							<div class="col-3">
 								<img class="profile-picture img-fluid" src="
-								{{ project.logo }}
-								{% if project.logo == '' %}
-								{{'https://ui-avatars.com/api/?name=John+Doe&size=255'}}
-								{% endif %}
+								{{project.getImage(project.title, project.logo)}}
 								" alt="">
 							</div>
 							<div class="col-9">

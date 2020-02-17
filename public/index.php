@@ -49,6 +49,24 @@ $map->get('index', '/', [
 
 // Jobs
 
+$map->get('indexJob', '/jobs', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'indexAction',
+    'auth' => true,
+]);
+
+$map->get('deleteJob', '/jobs/delete', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'deleteAction',
+    'auth' => true,
+]);
+
+$map->get('restoreJob', '/jobs/restore', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'restoreAction',
+    'auth' => true,
+]);
+
 $map->get('addjob', '/jobs/add', [
     'controller' => 'App\Controllers\JobsController',
     'action' => 'getAddJobAction',
@@ -117,6 +135,7 @@ $map->get('admin', '/admin', [
     'action' => 'getIndex',
     'auth' => true,
 ]);
+
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);

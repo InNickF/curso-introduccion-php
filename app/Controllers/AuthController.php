@@ -28,6 +28,7 @@ class AuthController extends BaseController {
         if($user) {
             if (\password_verify($postData['password'], $user->password)) {
                 $_SESSION['userId'] = $user->id;
+                $_SESSION['userName'] = $user->name;
                 unset($_SESSION['routeProtected']);
                 return new RedirectResponse('/admin');
             } else {
@@ -50,6 +51,7 @@ class AuthController extends BaseController {
     }
     public function getLogout() {
         unset($_SESSION['userId']);
+        unset($_SESSION['userName']);
         return new RedirectResponse('/login');
     }
 }

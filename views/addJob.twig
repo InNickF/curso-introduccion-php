@@ -12,15 +12,24 @@
 			{{ getMessage }}
 		</div>
 	{% endif %}
-	<form action="/jobs/add" method="post">
+	<form action="/jobs/add" method="post" enctype="multipart/form-data">
 		<label>
 			Title
 		</label><br>
-		<input name="title" type="text"><br>
+		<input name="title" type="text"><br><br>
 		<label>
 			Description
 		</label><br>
-		<input name="description" type="text"><br>
+		<input name="description" type="text"><br><br>
+		<label>
+			Months work here
+		</label><br>
+		<input name="months" type="number"><br><br>
+		<label>
+        Logo:
+    	</label><br>
+    <input name="logo" type="file"><br><br>
+		
 		<button type="submit">Send</button>
 	</form><br>
 	{% if userId %}
