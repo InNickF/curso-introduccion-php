@@ -18,7 +18,8 @@
         "laminas/laminas-httphandlerrunner": "^1.1",
         "laminas/laminas-diactoros": "^2.2",
         "filp/whoops": "^2.7",
-        "franzl/whoops-middleware": "^1.2"
+        "franzl/whoops-middleware": "^1.2",
+        "monolog/monolog": "^2.0"
     }
 
 }

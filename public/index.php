@@ -1,7 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_error', 1);
-error_reporting(E_ALL);
+
 require_once '../vendor/autoload.php';
 
 use App\Middlewares\AuthenticationMiddleware;
@@ -20,6 +18,19 @@ $capsule = new Capsule;
 $container = new Container();
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
+
+if(getenv('DEBUG') === 'true') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_error', 1);
+    error_reporting(E_ALL);
+}
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$log = new Logger('app');
+$log->pushHandler(new StreamHandler(__DIR__ . '/../logs/app.log', Logger::WARNING));
 
 session_start();
 
@@ -164,16 +175,22 @@ if(!$route) {
         
         $harmony = new Harmony($request, new Response());
         $harmony
-        ->addMiddleware(new LaminasEmitterMiddleware(new EmitterSapiEmitter))
-        ->addMiddleware(new WhoopsMiddleware)
+        ->addMiddleware(new LaminasEmitterMiddleware(new EmitterSapiEmitter));
+        if(getenv('DEBUG') === 'true') {
+        $harmony
+            ->addMiddleware(new WhoopsMiddleware);
+        }
+        $harmony
         ->addMiddleware(new AuthenticationMiddleware)
         ->addMiddleware(new Middlewares\AuraRouter($routerContainer))
         ->addMiddleware(new DispatcherMiddleware($container, 'request-handler'))
         ->run();
     } catch(Exception $e) {
+        $log->error('Job not found');
         $emitter = new EmitterSapiEmitter();
         $emitter->emit(new Response\EmptyResponse(400));
     } catch(Error $e) {
+        $log->warning('App error:' . $e->getMessage());
         $emitter = new EmitterSapiEmitter();
         $emitter->emit(new Response\EmptyResponse(500));
     }
