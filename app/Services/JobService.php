@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\Models\Job;
+use Exception;
 use Respect\Validation\Validator as v;
 
 class JobService {
@@ -49,16 +50,22 @@ class JobService {
 
     public function deleteJob($id) {
         $job = Job::find($id);
+        if(!$job) {
+            throw new Exception('Job not found');
+        }
         $job->delete();
     }
 
     public function restoreJob($id) {
         $job = Job::withTrashed()->find($id);
+        if(!$job) {
+            throw new Exception('Job not found');
+        }
         $job->restore();
     }
 
     public function forceDeleteJob($id) {
-        $job = Job::withTrashed()->find($id);
+        $job = Job::withTrashed()->findOrFail($id);
         $job->forceDelete();
     }
 }

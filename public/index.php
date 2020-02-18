@@ -8,6 +8,7 @@ use App\Middlewares\AuthenticationMiddleware;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Aura\Router\RouterContainer;
 use DI\Container;
+use Franzl\Middleware\Whoops\WhoopsMiddleware;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter as EmitterSapiEmitter;
 use WoohooLabs\Harmony\Harmony;
 use WoohooLabs\Harmony\Middleware\DispatcherMiddleware;
@@ -153,7 +154,10 @@ $map->get('admin', '/admin', [
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
 
-
+if(!$route) {
+    echo 'Not route';
+} else {
+    try {
         $hadlerData = $route->handler;
         $needsAuth = $hadlerData['auth'] ?? false;
         $_SESSION['needsAuth'] = $needsAuth;
@@ -161,21 +165,17 @@ $route = $matcher->match($request);
         $harmony = new Harmony($request, new Response());
         $harmony
         ->addMiddleware(new LaminasEmitterMiddleware(new EmitterSapiEmitter))
+        ->addMiddleware(new WhoopsMiddleware)
         ->addMiddleware(new AuthenticationMiddleware)
         ->addMiddleware(new Middlewares\AuraRouter($routerContainer))
         ->addMiddleware(new DispatcherMiddleware($container, 'request-handler'))
         ->run();
-    // }
-    //     // $controller = $container->get($controllerName);
-    //     // $response = $controller->$actionName($request);
-    // }
+    } catch(Exception $e) {
+        $emitter = new EmitterSapiEmitter();
+        $emitter->emit(new Response\EmptyResponse(400));
+    } catch(Error $e) {
+        $emitter = new EmitterSapiEmitter();
+        $emitter->emit(new Response\EmptyResponse(500));
+    }
+}
 
-//     foreach ($response->getHeaders() as $name => $values) {
-//         foreach ($values as $value) {
-//            header(sprintf('%s: %s', $name, $value), false);
-//         }
-//     }
-
-//     http_response_code($response->getStatusCode());
-//     echo $response->getBody();
-// }
