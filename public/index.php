@@ -123,13 +123,13 @@ $map->post('saveProject', '/projects/add', [
 $map->get('addUser', '/users/add', [
     'App\Controllers\UsersController',
     'getAddUserAction',
-    'auth' => false,
+    'auth' => true,
 ]);
 
 $map->post('saveUser', '/users/add', [
     'App\Controllers\UsersController',
     'getAddUserAction',
-    'auth' => false,
+    'auth' => true,
 ]);
 
 
