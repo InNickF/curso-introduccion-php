@@ -4,11 +4,16 @@ ini_set('display_startup_error', 1);
 error_reporting(E_ALL);
 require_once '../vendor/autoload.php';
 
-use App\Services\JobService;
+use App\Middlewares\AuthenticationMiddleware;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Aura\Router\RouterContainer;
 use DI\Container;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter as EmitterSapiEmitter;
+use WoohooLabs\Harmony\Harmony;
+use WoohooLabs\Harmony\Middleware\DispatcherMiddleware;
+use WoohooLabs\Harmony\Middleware\LaminasEmitterMiddleware;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\ServerRequestFactory;
 
 $capsule = new Capsule;
 $container = new Container();
@@ -34,7 +39,7 @@ $capsule->setAsGlobal();
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
 
-$request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
+$request = ServerRequestFactory::fromGlobals(
     $_SERVER,
     $_GET,
     $_POST,
@@ -45,73 +50,73 @@ $request = Zend\Diactoros\ServerRequestFactory::fromGlobals(
 $routerContainer = new RouterContainer();
 $map = $routerContainer->getMap();
 $map->get('index', '/', [
-    'controller' => 'App\Controllers\IndexController',
-    'action' => 'indexAction',
+    'App\Controllers\IndexController',
+    'indexAction',
 ]);
 
 // Jobs
 
 $map->get('indexJob', '/jobs', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'indexAction',
+    'App\Controllers\JobsController',
+    'indexAction',
     'auth' => true,
 ]);
 
 $map->get('deleteJob', '/jobs/delete', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'deleteAction',
+    'App\Controllers\JobsController',
+    'deleteAction',
     'auth' => true,
 ]);
 
 $map->get('forceDeleteJob', '/jobs/forcedelete', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'forceDeleteAction',
+    'App\Controllers\JobsController',
+    'forceDeleteAction',
     'auth' => true,
 ]);
 
 $map->get('restoreJob', '/jobs/restore', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'restoreAction',
+    'App\Controllers\JobsController',
+    'restoreAction',
     'auth' => true,
 ]);
 
 $map->get('addjob', '/jobs/add', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'getAddJobAction',
+    'App\Controllers\JobsController',
+    'getAddJobAction',
     'auth' => true,
 ]);
 
 $map->post('saveJob', '/jobs/add', [
-    'controller' => 'App\Controllers\JobsController',
-    'action' => 'getAddJobAction',
+    'App\Controllers\JobsController',
+    'getAddJobAction',
     'auth' => true,
 ]);
 
 // Projects
 
 $map->get('addProject', '/projects/add', [
-    'controller' => 'App\Controllers\ProjectsController',
-    'action' => 'getAddProjectAction',
+    'App\Controllers\ProjectsController',
+    'getAddProjectAction',
     'auth' => true,
 ]);
 
 $map->post('saveProject', '/projects/add', [
-    'controller' => 'App\Controllers\ProjectsController',
-    'action' => 'getAddProjectAction',
+    'App\Controllers\ProjectsController',
+    'getAddProjectAction',
     'auth' => true,
 ]);
 
 // Users
 
 $map->get('addUser', '/users/add', [
-    'controller' => 'App\Controllers\UsersController',
-    'action' => 'getAddUserAction',
+    'App\Controllers\UsersController',
+    'getAddUserAction',
     'auth' => false,
 ]);
 
 $map->post('saveUser', '/users/add', [
-    'controller' => 'App\Controllers\UsersController',
-    'action' => 'getAddUserAction',
+    'App\Controllers\UsersController',
+    'getAddUserAction',
     'auth' => false,
 ]);
 
@@ -119,28 +124,28 @@ $map->post('saveUser', '/users/add', [
 // Login
 
 $map->get('loginForm', '/login', [
-    'controller' => 'App\Controllers\AuthController',
-    'action' => 'getLogin',
+    'App\Controllers\AuthController',
+    'getLogin',
 ]);
 
 $map->post('authUser', '/auth', [
-    'controller' => 'App\Controllers\AuthController',
-    'action' => 'postLogin',
+    'App\Controllers\AuthController',
+    'postLogin',
 ]);
 
 // Logout
 
 $map->get('logout', '/logout', [
-    'controller' => 'App\Controllers\AuthController',
-    'action' => 'getLogout',
+    'App\Controllers\AuthController',
+    'getLogout',
     'auth' => true,
 ]);
 
 // Admin
 
 $map->get('admin', '/admin', [
-    'controller' => 'App\Controllers\AdminController',
-    'action' => 'getIndex',
+    'App\Controllers\AdminController',
+    'getIndex',
     'auth' => true,
 ]);
 
@@ -148,29 +153,29 @@ $map->get('admin', '/admin', [
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
 
-if (!$route) {
-    echo 'No route';
-} else {
-    $hadlerData = $route->handler;
-    $controllerName = $hadlerData['controller'];
-    $actionName = $hadlerData['action'];
-    $needsAuth = $hadlerData['auth'] ?? false;
-    $sessionUserId = $_SESSION['userId'] ?? null;
 
-    if($needsAuth && !$sessionUserId) {
-        $_SESSION['routeProtected']= 'Route protected, you need to be logged.';
-        $response = new RedirectResponse('/login');
-    } else {
-        $controller = $container->get($controllerName);
-        $response = $controller->$actionName($request);
-    }
+        $hadlerData = $route->handler;
+        $needsAuth = $hadlerData['auth'] ?? false;
+        $_SESSION['needsAuth'] = $needsAuth;
+        
+        $harmony = new Harmony($request, new Response());
+        $harmony
+        ->addMiddleware(new LaminasEmitterMiddleware(new EmitterSapiEmitter))
+        ->addMiddleware(new AuthenticationMiddleware)
+        ->addMiddleware(new Middlewares\AuraRouter($routerContainer))
+        ->addMiddleware(new DispatcherMiddleware($container, 'request-handler'))
+        ->run();
+    // }
+    //     // $controller = $container->get($controllerName);
+    //     // $response = $controller->$actionName($request);
+    // }
 
-    foreach ($response->getHeaders() as $name => $values) {
-        foreach ($values as $value) {
-           header(sprintf('%s: %s', $name, $value), false);
-        }
-    }
+//     foreach ($response->getHeaders() as $name => $values) {
+//         foreach ($values as $value) {
+//            header(sprintf('%s: %s', $name, $value), false);
+//         }
+//     }
 
-    http_response_code($response->getStatusCode());
-    echo $response->getBody();
-}
+//     http_response_code($response->getStatusCode());
+//     echo $response->getBody();
+// }

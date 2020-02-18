@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controllers;
-use Zend\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
 
 class BaseController {
     public $templateEngine;

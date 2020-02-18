@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\User;
-use Zend\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
 
 class AuthController extends BaseController {
     public function getLogin() {
@@ -52,6 +52,6 @@ class AuthController extends BaseController {
     public function getLogout() {
         unset($_SESSION['userId']);
         unset($_SESSION['userName']);
-        return new RedirectResponse('/login');
+        return new RedirectResponse('/');
     }
 }

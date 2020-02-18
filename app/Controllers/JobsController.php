@@ -5,8 +5,8 @@ namespace App\Controllers;
 use App\Models\Job;
 use App\Controllers\BaseController;
 use App\Services\JobService;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Diactoros\ServerRequest;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\ServerRequest;
 
 class JobsController extends BaseController {
     private $jobService;
@@ -53,7 +53,7 @@ class JobsController extends BaseController {
         'userId' => null];
 
         $finalResult = $this->jobService->addJob($request, $result);
-        var_dump($finalResult);
+        // var_dump($finalResult);
         return $this->renderHTML('addJob.twig', [
             'getMessage' => $finalResult['getMessage'],
             'error' => $finalResult['e'],
