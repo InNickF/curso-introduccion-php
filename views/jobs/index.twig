@@ -20,6 +20,9 @@
 				<th class="text-right">
 					Action
 				</th>
+				<th class="text-right">
+					Delete
+				</th>
 			</tr>
 			{% for job in jobs %}
 				<tr>
@@ -34,12 +37,14 @@
 					</td>
 					<td class="text-right">
                     {% if job.deleted_at %}
-                    <a class="btn btn-warning" href="/jobs/restore?id={{job.id}}">Restore</a>
+                    <a class="btn btn-primary" href="/jobs/restore?id={{job.id}}">Show</a>
                     {% endif %}
                     {% if not job.deleted_at %}
-                    <a class="btn btn-danger" href="/jobs/delete?id={{job.id}}">Delete</a>
+                    <a class="btn btn-warning" href="/jobs/delete?id={{job.id}}">Hide</a>
                     {% endif %}
-
+					</td>
+					<td class="text-right">
+                    <a class="btn btn-danger" href="/jobs/forcedelete?id={{job.id}}">Delete</a>
 					</td>
 				</tr>
 			{% endfor %}

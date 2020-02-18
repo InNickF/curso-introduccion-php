@@ -4,12 +4,14 @@ ini_set('display_startup_error', 1);
 error_reporting(E_ALL);
 require_once '../vendor/autoload.php';
 
+use App\Services\JobService;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Aura\Router\RouterContainer;
+use DI\Container;
 use Zend\Diactoros\Response\RedirectResponse;
 
 $capsule = new Capsule;
-
+$container = new Container();
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
@@ -58,6 +60,12 @@ $map->get('indexJob', '/jobs', [
 $map->get('deleteJob', '/jobs/delete', [
     'controller' => 'App\Controllers\JobsController',
     'action' => 'deleteAction',
+    'auth' => true,
+]);
+
+$map->get('forceDeleteJob', '/jobs/forcedelete', [
+    'controller' => 'App\Controllers\JobsController',
+    'action' => 'forceDeleteAction',
     'auth' => true,
 ]);
 
@@ -153,7 +161,7 @@ if (!$route) {
         $_SESSION['routeProtected']= 'Route protected, you need to be logged.';
         $response = new RedirectResponse('/login');
     } else {
-        $controller = new $controllerName;
+        $controller = $container->get($controllerName);
         $response = $controller->$actionName($request);
     }
 

@@ -79,10 +79,5 @@ class Job extends Model {
     
     }
 
-    public function printElement($element) {
-      if($element->visible == false) {
-        return;
-      };
-    }
 
 };

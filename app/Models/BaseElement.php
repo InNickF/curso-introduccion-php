@@ -76,25 +76,4 @@ class BaseElement implements Printable {
       
       }
 
-      public function printElement(Printable $element) {
-        if($element->visible == false) {
-          return;
-        };
-      
-        echo "
-        <li class=\"work-position\">
-        <h5>" . $element->getTitle() . "</h5>
-        <small>" . $this->getDurationAsString() . "</small>
-        <p>" . $element->getDescription() . "</p>
-      
-        <strong>Achievements:</strong>
-        <ul>
-          <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-          <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-          <li>Lorem ipsum dolor sit amet, 80% consectetuer adipiscing elit.</li>
-        </ul>
-      </li>
-        ";
-      }
-
 };
