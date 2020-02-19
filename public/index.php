@@ -161,6 +161,19 @@ $map->get('admin', '/admin', [
     'auth' => true,
 ]);
 
+// Admin
+
+$map->get('contactForm', '/contact', [
+    'App\Controllers\ContactController',
+    'getIndex',
+]);
+
+$map->post('contactSend', '/contact/send', [
+    'App\Controllers\ContactController',
+    'postSendForm',
+]);
+
+
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
