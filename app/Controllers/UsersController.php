@@ -45,4 +45,53 @@ class UsersController extends BaseController {
             'userId' => $userId,
         ]);
     }
+
+    public function getPassword(){
+        return $this->renderHTML('users/pass.twig');
+    }
+
+public function changePassword($request){
+        $responseMessage = '';
+        $classMessage = '';
+        if($request->getMethod() == "POST"){
+            $postData = $request->getParsedBody();
+
+            $dataValidation = v::key('password',v::stringType()->notEmpty())
+                                       ->key('newpass',v::stringType()->notEmpty())
+                                       ->key('confirmpass',v::stringType()->notEmpty());
+            try {
+                $dataValidation->assert($postData);
+                $sessionUserId = $_SESSION['userId'] ?? null;
+                $userSearch = User::find($sessionUserId);
+                if($userSearch){
+                    if(password_verify($postData['password'],$userSearch->password)){
+                        if($postData['newpass']==$postData['confirmpass']){
+                            $newPass = password_hash($postData['newpass'],PASSWORD_DEFAULT);
+                            $userSearch->password = $newPass;
+                            $userSearch->save();
+                            $responseMessage = 'saved';
+                            $classMessage = 'success';
+                        } else{
+                            $responseMessage = 'Confirm Pass';
+                            $classMessage = 'warning';
+                        }
+                    } else{
+                        $responseMessage = 'Check credentials';
+                        $classMessage = 'warning';
+                    }
+                } else{
+                    $responseMessage = 'User not Found';
+                    $classMessage = 'error';
+                }
+            }catch (\Exception $e){
+                $responseMessage = $e->getMessage();
+                $classMessage = 'warning';
+            }
+
+        }
+        return $this->renderHTML('users/pass.twig',[
+           'responseMessage' => $responseMessage,
+           'classMessage' => $classMessage
+        ]);
+    }
 }

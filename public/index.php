@@ -173,6 +173,19 @@ $map->post('contactSend', '/contact/send', [
     'postSendForm',
 ]);
 
+// Change password
+
+$map->get('showPass','/users/pass',[
+    'App\Controllers\UsersController',
+    'getPassword',
+    'auth' => true,
+]);
+
+$map->post('change','/users/changepass',[
+    'App\Controllers\UsersController',
+    'changePassword',
+    'auth' => true,
+]);
 
 
 $matcher = $routerContainer->getMatcher();

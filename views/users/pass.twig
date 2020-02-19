@@ -1,0 +1,21 @@
+{% extends 'layout.twig' %}
+{% block content %}
+    <form action="/users/changepass"method="post">
+        <h1>Change Password</h1>
+        {% if responseMessage != '' %}
+        <div class="alert alert-{{ classMessage }}">
+            {{ responseMessage }}
+        </div>
+    {% endif %}
+        <label for="">Password</label><br>
+        <input type="text"name="password"><br><br>
+
+        <label for="">New Pass</label><br>
+        <input type="password"name="newpass"><br><br>
+
+        <label for="">Confirm Pass</label><br>
+        <input type="password"name="confirmpass"><br><br>
+
+        <button type="submit">Change</button>
+    </form>
+{% endblock %}

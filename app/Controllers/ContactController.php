@@ -3,9 +3,13 @@ namespace App\Controllers;
 
 require_once '../vendor/autoload.php';
 
+use App\Models\ContactForm;
 use Exception;
-use Laminas\Diactoros\Response\RedirectResponse;
 use Laminas\Diactoros\ServerRequest;
+use Respect\Validation\Validator as v;
+
+use Laminas\Diactoros\Response\RedirectResponse;
+use Respect\Validation\Exceptions\ValidationException;
 use Swift_Mailer;
 use Swift_Message;
 use Swift_SmtpTransport;
@@ -18,34 +22,30 @@ class ContactController extends BaseController {
     }
 
     public function postSendForm(ServerRequest $request) {
-        $requestData = $request->getParsedBody();
-        $userName = $requestData['name'];
-        $userEmail = $requestData['email'];
-        $userMessage = $requestData['message'];
-        
         $e = null;
         $sended = null;
         $getMessage = null;
 
+        $requestData = $request->getParsedBody();
+        $userName = $requestData['name'];
+        $userEmail = $requestData['email'];
+        $userMessage = $requestData['message'];
+
+        $userValidator = v::key('name', v::stringType()->notEmpty()->notOptional())
+            ->key('email', v::email()->notEmpty()->notOptional())
+            ->key('message', v::notEmpty()->notOptional());
+        
         try {
-            // Create the Transport
-            $transport = (new Swift_SmtpTransport(getenv('MAIL_HOST'), getenv('MAIL_PORT')))
-            ->setUsername(getenv('MAIL_USERNAME'))
-            ->setPassword(getenv('MAIL_PASSWORD'))
-            ;
-    
-            // Create the Mailer using your created Transport
-            $mailer = new Swift_Mailer($transport);
-    
-            // Create a message
-            $message = (new Swift_Message('Contact Form'))
-            ->setFrom([getenv('MAIL_FROM_ADDRESS') => getenv('MAIL_FROM_NAME')])
-            ->setTo(['in.nickf@gmail.com' => 'Nick'])
-            ->setBody("Hi, you have a new messsage of: $userName - $userEmail and ther message is: $userMessage");
+            $userValidator->assert($requestData);
+            
+            $contactForm = new ContactForm();
+            $contactForm->name = $userName;
+            $contactForm->email = $userEmail;
+            $contactForm->message = $userMessage;
+            $contactForm->sended = false;
+            $contactForm->save();
             $sended = true;
             $getMessage = 'Sended';
-            // Send the message
-            $result = $mailer->send($message);
         } catch(Exception $e) {
             $getMessage = 'Error at send email, try again';
         }

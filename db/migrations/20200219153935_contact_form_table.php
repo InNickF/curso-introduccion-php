@@ -3,7 +3,7 @@
 use Phinx\Db\Action\AddColumn;
 use Phinx\Migration\AbstractMigration;
 
-class CreateJobsTable extends AbstractMigration
+class ContactFormTable extends AbstractMigration
 {
     /**
      * Change Method.
